@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>What the Temp</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url(images/bg-image.jpg) no-repeat;
+            background-size: cover;
+            height: 100vh;
+            position: relative;
+        }
+
+        .items {
+            transform: translateY(30%);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container items">
+        <form class="col-md-6 m-auto py-5">
+            <div class="input-group mb-3">
+                <input id="get-city-name" type="text" class="form-control glass"
+                    placeholder="Enter a location for Weather ...">
+                <div class="input-group-append">
+                    <button id="search-btn" type="button" class="btn btn-danger">Search</button>
+                </div>
+            </div>
+            <p style="color:rgb(255, 255, 255);" id="invalid-city" class="text-center"></p>
+        </form>
+        <div class="weather-status text-white text-center">
+            <img id="icon" src="https://openweathermap.org/img/wn/02d@2x.png" alt="">
+            <h1 id="city-name">Dhaka</h1>
+            <h3 id="temp-total"><span id="temp">38.06</span>&deg;C</h3>
+            <h1 id="status" class="lead">Clouds</h1>
+        </div>
+    </div>
+
+    <script>
+        function defaultCity() {
+            fetch('https://api.openweathermap.org/data/2.5/weather?q=kushtia&units=metric&appid=d047062d79b5aba1ccae6a7dcfdd9951')
+            .then(req => req.json())
+            .then(data => {
+                document.getElementById('city-name').innerText = data.name + '\n(default)'
+                document.getElementById('temp').innerText = data.main.temp
+                document.getElementById('status').innerText = data.weather[0].main
+                const iconId = data.weather[0].icon
+                const iconUrl = 'https://openweathermap.org/img/wn/' + iconId + '@2x.png'
+                document.getElementById('icon').src = iconUrl
+            })
+        }
+        defaultCity()
+
+        function searchCity() {
+            const cityName = document.getElementById('get-city-name').value
+            fetch('https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&units=metric&appid=d047062d79b5aba1ccae6a7dcfdd9951')
+                .then(req => req.json())
+                .then(data => {
+                    document.getElementById('city-name').innerText = data.name
+                    document.getElementById('temp').innerText = data.main.temp
+                    document.getElementById('status').innerText = data.weather[0].main
+                    document.getElementById('get-city-name').value = ''
+                    const iconId = data.weather[0].icon
+                    const iconUrl = 'https://openweathermap.org/img/wn/' + iconId + '@2x.png'
+                    document.getElementById('icon').src = iconUrl
+                    document.getElementById('invalid-city').innerText = ''
+                })
+                .catch(error => {
+                    document.getElementById('get-city-name').value = ''
+                    document.getElementById('invalid-city').innerText = 'No such city found'
+                    defaultCity()
+                })
+        }
+        const searchButton = document.getElementById('search-btn')
+        searchButton.addEventListener('click', function () {
+            searchCity()
+        })
+    </script>
+</body>
+
+</html>
