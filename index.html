@@ -46,15 +46,15 @@
     <script>
         function defaultCity() {
             fetch('https://api.openweathermap.org/data/2.5/weather?q=kushtia&units=metric&appid=d047062d79b5aba1ccae6a7dcfdd9951')
-            .then(req => req.json())
-            .then(data => {
-                document.getElementById('city-name').innerText = data.name + '\n(default)'
-                document.getElementById('temp').innerText = data.main.temp
-                document.getElementById('status').innerText = data.weather[0].main
-                const iconId = data.weather[0].icon
-                const iconUrl = 'https://openweathermap.org/img/wn/' + iconId + '@2x.png'
-                document.getElementById('icon').src = iconUrl
-            })
+                .then(req => req.json())
+                .then(data => {
+                    document.getElementById('city-name').innerText = data.name + '\n(default)'
+                    document.getElementById('temp').innerText = data.main.temp
+                    document.getElementById('status').innerText = data.weather[0].main
+                    const iconId = data.weather[0].icon
+                    const iconUrl = 'https://openweathermap.org/img/wn/' + iconId + '@2x.png'
+                    document.getElementById('icon').src = iconUrl
+                })
         }
         defaultCity()
 
@@ -78,15 +78,15 @@
                     defaultCity()
                 })
         }
-        
+
         //handling search
         const searchButton = document.getElementById('search-btn')
         searchButton.addEventListener('click', function () {
             searchCity()
         })
         document.getElementById('get-city-name').addEventListener('keypress', function (event) {
-            if(event.key == 'Enter')
-            searchCity()git a
+            if (event.key == 'Enter')
+                searchCity()
         })
     </script>
 </body>
